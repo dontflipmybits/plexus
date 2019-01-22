@@ -1,5 +1,5 @@
 # coding: utf8
-import argparse, json, time, os
+import argparse, json, time, os, sys
 
 """
 sample output:
@@ -16,7 +16,7 @@ sample output:
 """
 
 default_dirs = [] #Add any directories you want scanned by default, then comment out the next two lines.
-default_config_file = open(os.path.join(os.getcwd(),"config.json"), "r").read() #See the config.json file to change the directories to be monitored.
+default_config_file = open(os.path.join(sys.path[0],"config.json"), "r").read() #See the config.json file to change the directories to be monitored.
 default_dirs = json.loads(default_config_file)["monitored_directories"]
 
 #parse arguments
@@ -27,7 +27,7 @@ parser.add_argument('-w', '--write', dest='savedir', help='Specify a directory t
 
 args = parser.parse_args()
 if len(args.directories)==0:
-    args.directories = [os.getcwd()]
+    args.directories = [sys.path[0]]
 
 for top in args.directories:
     #recursively pull file list
