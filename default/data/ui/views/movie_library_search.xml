@@ -1,0 +1,98 @@
+<form>
+  <label>Movie Library Search</label>
+  <description>Default loads the last 24hrs of data and dedups the results</description>
+  <search id="master">
+    <query>index=file_archive NOT(file="*.srt" OR file="*.sub" OR file="*.idx" OR file="*.sfv") | dedup file | eval size=round(size/1024/1024,2) | eval created=strftime(round(created/1000,0),"%d %b %y %T") | table created drive year movie resolution width_height Bitrate size Group video_codec audio_codec audio_channels file_type created folder file filePath</query>
+    <earliest>-24h@h</earliest>
+    <latest>now</latest>
+  </search>
+  <row>
+    <panel>
+      <chart>
+        <title>Resolution</title>
+        <search base="master">
+          <query>| top limit=20 resolution</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Video Codecs</title>
+        <search base="master">
+          <query>| top limit=20 video_codec</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Top Group pie chart</title>
+        <search base="master">
+          <query>| top limit=20 Group</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Audio Codecs</title>
+        <search base="master">
+          <query>| top limit=20 audio_codec</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>File Type</title>
+        <search base="master">
+          <query>| top limit=20 file_type</query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="text" token="TEXT" searchWhenChanged="true">
+        <label>Search</label>
+      </input>
+      <table>
+        <title>Free Search</title>
+        <search base="master">
+          <query>| search  filePath="*$TEXT$*" | eval Bitrate=replace(Bitrate,"(\d)\s(\d{3})(\s\w\w\w\w)","\1\2") | table created drive year movie resolution width_height Bitrate size Group video_codec audio_codec audio_channels file_type created folder file | sort - Bitrate</query>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">cell</option>
+        <option name="count">15</option>
+      </table>
+    </panel>
+  </row>
+</form>

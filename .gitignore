@@ -1,0 +1,7 @@
+package-lock.json
+.vscode
+node_modules
+.eslintrc.json
+.jsbeautifyrc
+local
+metadata/local.meta

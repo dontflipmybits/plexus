@@ -1,0 +1,10 @@
+<nav search_view="search" color="#2d2d2d">
+  <view name="search" default='true' />
+  <view name="data_models" />
+  <view name="reports" />
+  <view name="alerts" />
+  <view name="dashboards" />
+  <collection label="Content Library">
+    <view name="movie_library_search" />
+  </collection>
+</nav>
